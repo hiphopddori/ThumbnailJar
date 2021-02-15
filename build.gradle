@@ -13,8 +13,13 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.springframework', name: 'spring-web', version: '5.2.12.RELEASE'
-    compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.13'
+    // This dependency is exported to consumers, that is to say found on their compile classpath.
+    // compile group: 'org.springframework', name: 'spring-web', version: '5.2.12.RELEASE'
+    // compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.13'
+
+    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
+    compileOnly group: 'org.springframework', name: 'spring-web', version: '5.2.12.RELEASE'
+    compileOnly group: 'net.coobird', name: 'thumbnailator', version: '0.4.13'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
@@ -31,11 +36,11 @@ jar {
     /* 아래설정은 의존성 파일을 포함 시킨다
       이슈 : JAR를 사용하는 프로젝트에서 같은 디펜던시 종속성이 있을시 버전이 상이할시 이슈 발생
       개선점 : 추후 사용하는곳 우선 디펜던시 바라보게 가능한지 테스트 필
-    dependsOn configurations.ru요ntime
+    */
+    dependsOn configurations.runtime
     from {
         configurations.compile.collect {
             it.isDirectory() ? it : zipTree(it)
         }
     }
-    */
 }
