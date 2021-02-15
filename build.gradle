@@ -1,0 +1,41 @@
+//https://gyrfalcon.tistory.com/entry/Gradle-Executable-jar
+
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.springframework', name: 'spring-web', version: '5.2.12.RELEASE'
+    compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.13'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    archiveName 'ddoriThumbnail.jar'
+    manifest {
+        attributes 'Title': 'ddori thumbnail', 'Main-Class': 'com.ddori.util.Common'
+    }
+    /* 아래설정은 의존성 파일을 포함 시킨다
+      이슈 : JAR를 사용하는 프로젝트에서 같은 디펜던시 종속성이 있을시 버전이 상이할시 이슈 발생
+      개선점 : 추후 사용하는곳 우선 디펜던시 바라보게 가능한지 테스트 필
+    dependsOn configurations.ru요ntime
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    */
+}
